@@ -1,11 +1,11 @@
-CMAKE_MINIMUM_REQUIRED_VERSION(2.5)
+cmake_minimum_required(VERSION 3.12)
 project(mymuduo)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g ")
 
-set(LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+include_directories(${PROJECT_SOURCE_DIR}/include) 
 
-aux_source_directory(. SRC_LIST)
+add_subdirectory(src)
 
-add_library(mymudo SHARED ${SRC_LIST})
