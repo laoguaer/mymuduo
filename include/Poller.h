@@ -7,7 +7,7 @@
 
 class Channel;
 class EventLoop;
-class TimeStamp;
+class Timestamp;
 
 class Poller : noncopyable {
 public:
@@ -16,7 +16,7 @@ public:
 	Poller(EventLoop *loop);
 	virtual ~Poller();
 
-	virtual TimeStamp poll(int timeoutms, ChannelList *activeChannels) = 0;
+	virtual Timestamp poll(int timeoutms, ChannelList *activeChannels) = 0;
 	virtual void updateChannel(Channel*) = 0;
 	virtual void removeChannel(Channel*) = 0;
 
