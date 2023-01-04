@@ -4,10 +4,10 @@
 
 #include "Poller.h"
 
-class EPoller : public Poller {
+class EPollPoller : public Poller {
 public:
-	EPoller(EventLoop *loop);
-	~EPoller() override;
+	EPollPoller(EventLoop *loop);
+	~EPollPoller() override;
 
 	Timestamp poll(int timeoutms, ChannelList *activeChannels) override;
 	void updateChannel(Channel*) override;

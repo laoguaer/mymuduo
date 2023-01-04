@@ -11,7 +11,7 @@ thread_local EventLoop *t_loolInThisThread = nullptr;
 
 const int kPollTimeMs = 10000;
 
-int createEventfd() {
+static int createEventfd() {
 	int evtfd = ::eventfd(0, EFD_NONBLOCK | EFD_CLOEXEC);
 	if (evtfd < 0) {
 		LOG_FATAL("eventfd error: %d", errno);
@@ -125,6 +125,7 @@ void EventLoop::doPendingFuntors() {
 	callingPendingFunctors_ = false;
 }
 
+// 单独给wakeupChannel用做回调
 void EventLoop::handleRead() {
 	uint64_t one = 1;
 	ssize_t n = read(wakeupFd_, &one, sizeof one);

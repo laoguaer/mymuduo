@@ -1,7 +1,10 @@
 #include <iostream>
+#include <mutex>
 
 #include "Timestamp.h"
 #include "logger.h"
+
+std::mutex mtx;
 
 Logger& Logger::instance() {
 	static Logger logger;
@@ -11,6 +14,7 @@ void Logger::setLevel(int level) {
 	logLevel_ = level;
 }
 void Logger::log(std::string msg) {
+	mtx.lock();
 	switch (logLevel_)
 	{
 	case INFO:
@@ -29,4 +33,5 @@ void Logger::log(std::string msg) {
 		break;
 	}
 	std::cout << Timestamp::now().toString() << ": " << msg << std::endl;
+	mtx.unlock();
 }

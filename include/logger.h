@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <string.h>
 
 #include "noncopyable.h"
 
@@ -11,7 +12,9 @@
 		Logger &logger = Logger::instance(); \
 		logger.setLevel(INFO); \
 		char buf[1024] = {0}; \
-		snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
+		snprintf(buf, 1024, ("%s %s %d "), __FILE__, __FUNCTION__, __LINE__); \
+		size_t len = strlen(buf); \
+		snprintf(buf + len, 1024 - len, LogmsgFormat, ##__VA_ARGS__); \
 		logger.log(buf); \
 	} while(0)
 #define LOG_ERROR(LogmsgFormat, ...) \
@@ -19,7 +22,9 @@
 		Logger &logger = Logger::instance(); \
 		logger.setLevel(ERROR); \
 		char buf[1024] = {0}; \
-		snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
+		snprintf(buf, 1024, ("%s %s %d "), __FILE__, __FUNCTION__, __LINE__); \
+		size_t len = strlen(buf); \
+		snprintf(buf + len, 1024 - len, LogmsgFormat, ##__VA_ARGS__); \
 		logger.log(buf); \
 	} while(0)
 #define LOG_FATAL(LogmsgFormat, ...) \
@@ -27,7 +32,9 @@
 		Logger &logger = Logger::instance(); \
 		logger.setLevel(FATAL); \
 		char buf[1024] = {0}; \
-		snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
+		snprintf(buf, 1024, ("%s %s %d "), __FILE__, __FUNCTION__, __LINE__); \
+		size_t len = strlen(buf); \
+		snprintf(buf + len, 1024 - len, LogmsgFormat, ##__VA_ARGS__); \
 		logger.log(buf); \
 		exit(-1); \
 	} while(0)
@@ -37,7 +44,9 @@
 			Logger &logger = Logger::instance(); \
 			logger.setLevel(DEBUG); \
 			char buf[1024] = {0}; \
-			snprintf(buf, 1024, LogmsgFormat, ##__VA_ARGS__); \
+		snprintf(buf, 1024, ("%s %s %d "), __FILE__, __FUNCTION__, __LINE__); \
+		size_t len = strlen(buf); \
+		snprintf(buf + len, 1024 - len, LogmsgFormat, ##__VA_ARGS__); \
 			logger.log(buf); \
 		} while(0)
 #else
@@ -56,7 +65,7 @@ public:
 		void setLevel(int level);
 	void log(std::string msg);
 private:
-	Logger();
+	Logger() = default;
 
 	int logLevel_;
 };

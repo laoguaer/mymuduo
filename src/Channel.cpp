@@ -1,6 +1,7 @@
 #include "Channel.h"
 #include "sys/epoll.h"
 #include "logger.h"
+#include "EventLoop.h"
 
 const int Channel::kNoneEvent = 0;
 const int Channel::kReadEvent = EPOLLIN | EPOLLPRI;
@@ -13,12 +14,12 @@ Channel::~Channel() {}
 
 // Todo
 void Channel::remove() {
-	// loop_->removeChannel(this);
+	loop_->removeChannel(this);
 }
 
-// Todo
+
 void Channel::update() {
-	// loop_->updateChannel(this);
+	loop_->updateChannel(this);
 }
 
 void Channel::handleEvent(Timestamp receiveTime) {
