@@ -73,6 +73,7 @@ private:
     void handleError();
 
     void sendInLoop(const void* message, size_t len);
+	void sendInLoopString(std::string& message);
     void shutdownInLoop();
 
     EventLoop *loop_; // 这里绝对不是baseLoop， 因为TcpConnection都是在subLoop里面管理的

@@ -62,6 +62,7 @@ TcpConnection::~TcpConnection()
         name_.c_str(), channel_->fd(), (int)state_);
 }
 
+// fixme 
 void TcpConnection::send(const std::string &buf)
 {
     if (state_ == kConnected)
@@ -72,12 +73,7 @@ void TcpConnection::send(const std::string &buf)
         }
         else
         {
-            loop_->runInLoop(std::bind(
-                &TcpConnection::sendInLoop,
-                this,
-                buf.c_str(),
-                buf.size()
-            ));
+            loop_->runInLoop(std::bind(&TcpConnection::sendInLoopString, this, std::string(buf)));
         }
     }
 }
@@ -85,6 +81,10 @@ void TcpConnection::send(const std::string &buf)
 /**
  * 发送数据  应用写的快， 而内核发送数据慢， 需要把待发送数据写入缓冲区， 而且设置了水位回调
  */ 
+void TcpConnection::sendInLoopString(std::string& str) {
+	sendInLoop(str.c_str(), str.size() + 1);
+}
+
 void TcpConnection::sendInLoop(const void* data, size_t len)
 {
     ssize_t nwrote = 0;
@@ -101,6 +101,7 @@ void TcpConnection::sendInLoop(const void* data, size_t len)
     // 表示channel_第一次开始写数据，而且缓冲区没有待发送数据
     if (!channel_->isWriting() && outputBuffer_.readableBytes() == 0)
     {
+		printf("%lu ___----____----___----  bytes:%s\n", strlen((const char *)data), data);
         nwrote = ::write(channel_->fd(), data, len);
         if (nwrote >= 0)
         {
